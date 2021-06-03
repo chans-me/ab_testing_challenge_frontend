@@ -10,7 +10,7 @@
       v-if="data.length"
     >
     </v-data-table>
-    <div v-else class="text-center pa-16 mt-16">
+    <div v-if="error" class="text-center pa-16 mt-16">
       <span class="display-1">Something went wrong.</span>
     </div>
   </div>
@@ -29,6 +29,7 @@
           {text: 'Singedup Percentage', align: 'center', value: 'signedup_precent'},
         ],
         data: [],
+        error: false,
       };
     },
     methods: {
@@ -42,7 +43,7 @@
               this.$set(this.data[index], 'signedup_precent', percent);
             });
           })
-          .catch(err => console.log(err));
+          .catch(() => this.error = true);
       },
       calculatePercent(item) {
         let percent = (item.signedup_count/item.visitor_count * 100).toFixed(2);
